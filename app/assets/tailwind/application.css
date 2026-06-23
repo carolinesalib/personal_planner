@@ -1,1 +1,221 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: 'Nunito', system-ui, -apple-system, sans-serif;
+  --color-planner-bg: #E7E2DA;
+  --color-planner-card: #FBF8F4;
+  --color-planner-text: #2D2925;
+  --color-planner-muted: #998F82;
+  --color-planner-subtle: #B0A698;
+  --color-planner-border: #EFE9E1;
+  --color-planner-border-strong: #ECE5DB;
+  --color-planner-ring: #C7BEB1;
+  --color-planner-remove: #CCC3B7;
+  --color-planner-action: #9A9183;
+  --color-planner-done-bg: #F1EAE1;
+}
+
+.planner-bg {
+  background: var(--color-planner-bg);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.planner-shell {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--color-planner-card);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+@media (min-width: 480px) {
+  .planner-shell {
+    min-height: auto;
+    height: 838px;
+    border-radius: 48px;
+    border: 1px solid #D7D0C5;
+    box-shadow: 0 30px 70px rgba(45, 41, 37, 0.20);
+    margin: 44px 0;
+  }
+}
+
+.planner-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 26px 100px;
+}
+
+.planner-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 12px 0 28px;
+  background: var(--color-planner-card);
+  border-top: 1px solid var(--color-planner-border);
+}
+
+@media (min-width: 480px) {
+  .planner-nav {
+    border-radius: 0 0 48px 48px;
+  }
+}
+
+.planner-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-planner-ring);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.planner-nav-item.active {
+  color: var(--color-planner-text);
+}
+
+.should-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--color-planner-border);
+}
+
+.should-ring {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2.5px solid var(--color-planner-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  color: transparent;
+  transition: all 0.15s;
+  background: transparent;
+  padding: 0;
+}
+
+.should-ring:hover {
+  color: var(--color-planner-ring);
+}
+
+.should-ring--done {
+  background: var(--color-planner-text);
+  border-color: var(--color-planner-text);
+  color: var(--color-planner-card);
+  cursor: pointer;
+}
+
+.should-ring--done:hover {
+  opacity: 0.8;
+  color: var(--color-planner-card);
+}
+
+.should-text {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-planner-text);
+  cursor: pointer;
+  line-height: 1.35;
+}
+
+.should-text--done {
+  color: #A89F92;
+  text-decoration: line-through;
+  text-decoration-color: #CFC6BA;
+  cursor: default;
+}
+
+.should-remove {
+  flex: none;
+  border: none;
+  background: transparent;
+  color: var(--color-planner-remove);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  padding: 2px;
+}
+
+.should-remove:hover {
+  color: var(--color-planner-text);
+}
+
+.should-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-planner-text);
+  font-family: inherit;
+  border-bottom: 2px solid var(--color-planner-border);
+  padding-bottom: 2px;
+}
+
+.should-add-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 6px 0 16px;
+  border-bottom: 2px solid var(--color-planner-text);
+}
+
+.should-add-ring {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px dashed var(--color-planner-ring);
+}
+
+.should-add-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-planner-text);
+  font-family: inherit;
+}
+
+.should-add-input::placeholder {
+  color: var(--color-planner-ring);
+}
+
+.should-add-btn {
+  flex: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-planner-action);
+  font-family: inherit;
+}
+
+.should-add-btn:hover {
+  color: var(--color-planner-text);
+}

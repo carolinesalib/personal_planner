@@ -1,0 +1,7 @@
+<%= turbo_stream.remove @should %>
+<%= turbo_stream.update "shoulds-badge" do %>
+  <%= pluralize(Should.active.count, "item") %>
+<% end %>
+<%= turbo_stream.update "done-count" do %>
+  <%= Should.done.count %> completed
+<% end %>

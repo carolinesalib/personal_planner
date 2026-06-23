@@ -1,0 +1,18 @@
+<%= turbo_frame_tag should do %>
+  <div class="should-item" id="<%= dom_id(should) %>">
+    <%= button_to complete_should_path(should), method: :patch, class: "should-ring", form: { data: { turbo_frame: "_top" } } do %>
+      ✓
+    <% end %>
+
+    <span class="should-text"
+          data-controller="inline-edit"
+          data-inline-edit-url-value="<%= should_path(should) %>"
+          data-action="click->inline-edit#edit">
+      <%= should.title %>
+    </span>
+
+    <%= button_to should_path(should), method: :delete, class: "should-remove", form: { data: { turbo_frame: "_top" } } do %>
+      ×
+    <% end %>
+  </div>
+<% end %>

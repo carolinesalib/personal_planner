@@ -1,0 +1,7 @@
+<%= turbo_stream.remove "empty-state" %>
+<%= turbo_stream.append "shoulds-list" do %>
+  <%= render @should %>
+<% end %>
+<%= turbo_stream.update "shoulds-badge" do %>
+  <%= pluralize(Should.active.count, "item") %>
+<% end %>

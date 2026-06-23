@@ -1,0 +1,13 @@
+<%= turbo_frame_tag should do %>
+  <div class="should-item" id="<%= dom_id(should, :done) %>">
+    <%= button_to restore_should_path(should), method: :patch, class: "should-ring should-ring--done", form: { data: { turbo_frame: "_top" } } do %>
+      ✓
+    <% end %>
+
+    <span class="should-text should-text--done"><%= should.title %></span>
+
+    <%= button_to should_path(should), method: :delete, class: "should-remove", form: { data: { turbo_frame: "_top" } } do %>
+      ×
+    <% end %>
+  </div>
+<% end %>
