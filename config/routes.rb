@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  get "login", to: "sessions#new", as: :login
+  delete "logout", to: "sessions#destroy", as: :logout
+  get "auth/:provider/callback", to: "sessions#create"
+  get "auth/failure", to: "sessions#failure"
+
   resources :shoulds, only: %i[index create update destroy] do
     member do
       patch :complete

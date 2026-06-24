@@ -2,16 +2,16 @@ class ShouldsController < ApplicationController
   before_action :set_should, only: %i[update destroy complete restore]
 
   def index
-    @shoulds = Should.active
-    @done_count = Should.done.count
+    @shoulds = current_user.shoulds.active
+    @done_count = current_user.shoulds.done.count
   end
 
   def completed
-    @shoulds = Should.done
+    @shoulds = current_user.shoulds.done
   end
 
   def create
-    @should = Should.new(should_params)
+    @should = current_user.shoulds.new(should_params)
     if @should.save
       respond_to do |format|
         format.turbo_stream
@@ -60,7 +60,7 @@ class ShouldsController < ApplicationController
   private
 
   def set_should
-    @should = Should.find(params[:id])
+    @should = current_user.shoulds.find(params[:id])
   end
 
   def should_params

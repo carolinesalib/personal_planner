@@ -3,5 +3,5 @@
   <%= render @should %>
 <% end %>
 <%= turbo_stream.update "shoulds-badge" do %>
-  <%= pluralize(Should.active.count, "item") %>
+  <%= pluralize(current_user.shoulds.active.count, "item") %>
 <% end %>

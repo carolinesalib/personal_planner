@@ -1,4 +1,6 @@
 class Should < ApplicationRecord
+  belongs_to :user
+
   validates :title, presence: true
 
   scope :active, -> { where(completed: false).order(:position, :created_at) }
