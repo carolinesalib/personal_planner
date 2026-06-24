@@ -33,7 +33,24 @@ RSpec.describe "Shoulds", type: :request do
         expect(response.body).to include("1 thing checked off")
       end
     end
+  end
 
+  describe "PATCH /shoulds/:id/restore" do
+    it "restores the item and updates the done subtitle" do
+      should_item = create(:should, user: user, title: "Restored task", completed: true, completed_at: 1.hour.ago)
+      create(:should, user: user, title: "Still done", completed: true, completed_at: 2.hours.ago)
+
+      patch restore_should_path(should_item), headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+      expect(response).to have_http_status(:ok)
+      should_item.reload
+      expect(should_item.completed).to be false
+      expect(response.body).to include("done-subtitle")
+      expect(response.body).to include("1 thing checked off")
+    end
+  end
+
+  describe "DELETE /shoulds/:id" do
     it "does not allow deleting another user's should" do
       other_user = create(:user)
       other_should = create(:should, user: other_user, title: "Not mine")
