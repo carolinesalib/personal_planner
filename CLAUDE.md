@@ -42,10 +42,14 @@ bin/dev
 
 ## Dev commands
 - `bin/dev` — start the dev server (Procfile.dev)
-- `bin/rails test` — run tests
+- `bundle exec rspec` — run tests
 - `bin/rails db:migrate` — run migrations
 - `bin/rubocop` — lint
 - `bin/brakeman` — security scan
+
+## Testing
+- RSpec + Factory Bot (no Minitest)
+- TODO: Set up Playwright for Ruby (`playwright-ruby-client` + `capybara-playwright-driver`) for E2E tests
 
 ## Design — Pages
 
