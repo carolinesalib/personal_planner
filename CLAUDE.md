@@ -40,6 +40,13 @@ export GOOGLE_CLIENT_SECRET=your-client-secret
 bin/dev
 ```
 
+## Pre-commit checks
+Before every commit, run these in order:
+1. `bin/rubocop` — fix any offenses before committing
+2. `bundle exec rspec` — ensure all tests pass
+
+If either fails, ask the user whether to proceed with the commit or fix first.
+
 ## Dev commands
 - `bin/dev` — start the dev server (Procfile.dev)
 - `bundle exec rspec` — run tests

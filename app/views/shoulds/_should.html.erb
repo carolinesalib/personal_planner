@@ -11,8 +11,9 @@
       <%= should.title %>
     </span>
 
-    <%= button_to should_path(should), method: :delete, class: "should-remove", form: { data: { turbo_frame: "_top" } } do %>
-      ×
-    <% end %>
+    <button class="should-remove"
+            data-action="click->delete-confirm#show"
+            data-delete-confirm-title-param="<%= should.title %>"
+            data-delete-confirm-url-param="<%= should_path(should) %>">×</button>
   </div>
 <% end %>

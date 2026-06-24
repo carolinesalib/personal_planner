@@ -23,10 +23,12 @@
   </head>
 
   <body class="planner-bg">
-    <div class="planner-shell">
+    <div class="planner-shell" data-controller="delete-confirm">
       <div class="planner-content">
         <%= yield %>
       </div>
+
+      <%= render "shared/delete_confirm" %>
 
       <nav class="planner-nav">
         <%= link_to shoulds_path, class: "planner-nav-item #{current_page?(shoulds_path) || current_page?(root_path) || current_page?(completed_shoulds_path) ? 'active' : ''}" do %>
