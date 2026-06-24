@@ -5,3 +5,6 @@
 <%= turbo_stream.update "done-count" do %>
   <%= current_user.shoulds.done.count %> completed
 <% end %>
+<%= turbo_stream.update "done-subtitle" do %>
+  <%= pluralize(current_user.shoulds.done.count, "thing") %> checked off. Nice.
+<% end %>
