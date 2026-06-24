@@ -1,0 +1,11 @@
+<%= turbo_stream.update "gratitude-toggle" do %>
+  <div style="flex:1;">
+    <div style="font-size:16px; font-weight:800; color:#2D2925;">Gratitude journal</div>
+    <div style="font-size:13px; font-weight:600; color:#A39A8D; margin-top:3px; line-height:1.4; max-width:228px;">Add a gratitude prompt when you plan a day.</div>
+  </div>
+  <%= button_to toggle_gratitude_settings_path, method: :patch, data: { turbo_frame: "_top" }, style: "border:none; padding:0; cursor:pointer; background:transparent;" do %>
+    <div style="width:52px; height:30px; border-radius:15px; background:<%= current_user.gratitude_enabled? ? '#2D2925' : '#D7D0C5' %>; padding:3px; transition:background 0.2s; display:flex; align-items:center; justify-content:<%= current_user.gratitude_enabled? ? 'flex-end' : 'flex-start' %>;">
+      <div style="width:24px; height:24px; border-radius:50%; background:#FFFFFF; box-shadow:0 1px 3px rgba(0,0,0,0.15);"></div>
+    </div>
+  <% end %>
+<% end %>

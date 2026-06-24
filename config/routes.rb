@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   get "auth/:provider/callback", to: "sessions#create"
   get "auth/failure", to: "sessions#failure"
 
+  resource :settings, only: :show do
+    patch :toggle_gratitude
+  end
+
   resources :shoulds, only: %i[index create update destroy] do
     member do
       patch :complete
