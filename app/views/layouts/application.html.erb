@@ -31,12 +31,12 @@
       <%= render "shared/delete_confirm" %>
 
       <nav class="planner-nav">
-        <%= link_to shoulds_path, class: "planner-nav-item #{current_page?(shoulds_path) || current_page?(root_path) || current_page?(completed_shoulds_path) ? 'active' : ''}" do %>
+        <%= link_to shoulds_path, class: "planner-nav-item #{current_page?(shoulds_path) || current_page?(completed_shoulds_path) ? 'active' : ''}" do %>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="7" r="1.4"></circle><circle cx="5" cy="12" r="1.4"></circle><circle cx="5" cy="17" r="1.4"></circle><line x1="10" y1="7" x2="19" y2="7"></line><line x1="10" y1="12" x2="19" y2="12"></line><line x1="10" y1="17" x2="19" y2="17"></line></svg>
           <span>Shoulds</span>
         <% end %>
 
-        <%= link_to today_path, class: "planner-nav-item #{current_page?(today_path) ? 'active' : ''}" do %>
+        <%= link_to today_path, class: "planner-nav-item #{current_page?(today_path) || current_page?(root_path) ? 'active' : ''}" do %>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"></circle><polyline points="8.5,12 11,14.5 15.5,9.5"></polyline></svg>
           <span>Today</span>
         <% end %>
