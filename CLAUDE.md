@@ -101,6 +101,35 @@ Calendar view that lets you plan ahead or look back at previous days.
 - i18n support — Portuguese and English
 - Onboarding screens — teach the methodology and let user select language
 
+## Deployment (Railway)
+
+Hosted on [Railway](https://railway.com). The project has two services: a **web app** (Dockerized Rails) and a **PostgreSQL** database.
+
+### Required env vars on the web service
+- `DATABASE_URL` — set to `${{Postgres.DATABASE_URL}}` (references the Postgres service)
+- `RAILS_MASTER_KEY` — from `config/master.key`
+- `SECRET_KEY_BASE` — generate with `bin/rails secret`
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `PORT` — set to `3000`
+
+### Deploy
+```
+railway up
+```
+
+### Run migrations
+Migrations can't run via `railway run` locally (internal hostnames don't resolve). Instead, use the public Postgres connection string from the Railway dashboard (Postgres service → Connect → Public):
+```
+DATABASE_URL="<public-postgres-url>" bin/rails db:prepare
+```
+
+### Google OAuth redirect URI
+Add your Railway domain to the Google Cloud Console authorized redirect URIs:
+```
+https://<your-app>.up.railway.app/auth/google_oauth2/callback
+```
+
 ## Decisions log
 - PostgreSQL over SQLite3 — familiar, better fit for multi-platform (web + iOS),
   handles concurrent writes well, easy to deploy on hosted platforms
