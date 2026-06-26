@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = { url: String }
+  static values = { url: String, model: { type: String, default: "should" } }
 
   edit() {
     const currentText = this.element.textContent.trim()
@@ -44,17 +44,18 @@ export default class extends Controller {
         "X-CSRF-Token": token,
         "Accept": "text/vnd.turbo-stream.html"
       },
-      body: JSON.stringify({ should: { title: newText } })
+      body: JSON.stringify({ [this.modelValue]: { title: newText } })
     }).then(response => response.text())
       .then(html => Turbo.renderStreamMessage(html))
   }
 
   cancel(input) {
     const span = document.createElement("span")
-    span.className = "should-text"
+    span.className = input.dataset.spanClass || "should-text"
     span.textContent = input.dataset.originalText
     span.dataset.controller = "inline-edit"
     span.dataset.inlineEditUrlValue = this.urlValue
+    span.dataset.inlineEditModelValue = this.modelValue
     span.dataset.action = "click->inline-edit#edit"
     input.replaceWith(span)
   }

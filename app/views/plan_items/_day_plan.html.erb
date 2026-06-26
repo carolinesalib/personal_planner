@@ -1,0 +1,119 @@
+<%
+  frac = @total > 0 ? @done.to_f / @total : 0
+  pct = @total > 0 ? (frac * 100).round : nil
+  deg = (frac * 360).round
+  is_today = @date == Date.current
+  kicker = is_today ? "TODAY" : @date.strftime("%A").upcase
+  big_label = @date.strftime("%b %-d")
+  progress_label = @total == 0 ? "Nothing planned yet" : "#{@done} of #{@total} done"
+  ring_bg = @total > 0 ? "conic-gradient(#2D2925 #{deg}deg, #DDD5C9 #{deg}deg)" : "#EBE4DA"
+  p_count = @priorities.count
+  chip = "#{p_count} / 5"
+  hint = case p_count
+         when 0 then "Aim for about five a day."
+         when 1..4 then "A few more to reach five — or stop here."
+         when 5 then "Five — a full day."
+         else "A big day. Trim if you can."
+         end
+  next_num = p_count >= 9 ? "+" : (p_count + 1).to_s
+  placeholder = p_count >= 5 ? "Add another priority…" : "Priority #{p_count + 1}…"
+%>
+
+<% if local_assigns[:from_calendar] %>
+  <%= link_to planner_path, style: "text-decoration:none; border:none; background:transparent; cursor:pointer; font-size:15px; font-weight:700; color:#9A9183; display:flex; align-items:center; gap:7px; padding:6px 0 2px;" do %>
+    <span style="font-size:17px;">&#8592;</span> Calendar
+  <% end %>
+<% end %>
+
+<div id="plan-header" style="display:flex; align-items:center; gap:16px; margin-top:6px;">
+  <div style="flex:none; width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:<%= ring_bg %>;">
+    <div style="width:42px; height:42px; border-radius:50%; background:#FBF8F4; display:flex; align-items:center; justify-content:center;">
+      <span style="font-size:13px; font-weight:800; color:#2D2925;"><%= pct ? "#{pct}%" : "–" %></span>
+    </div>
+  </div>
+  <div>
+    <div style="font-size:12px; font-weight:800; letter-spacing:0.16em; color:#B0A698;"><%= kicker %></div>
+    <div style="font-size:28px; font-weight:900; color:#2D2925; line-height:1.05;"><%= big_label %></div>
+    <div style="font-size:14px; font-weight:600; color:#998F82; margin-top:2px;"><%= progress_label %></div>
+  </div>
+</div>
+
+<!-- Priorities -->
+<div style="margin-top:26px; display:flex; align-items:center; justify-content:space-between;">
+  <div style="font-size:13px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#2D2925;">Priorities</div>
+  <div id="priority-chip" style="font-size:12px; font-weight:800; color:#B0A698; background:#F1EAE1; border-radius:999px; padding:3px 10px;"><%= chip %></div>
+</div>
+<div id="priority-hint" style="font-size:13px; font-weight:600; color:#A89F92; margin-top:4px;"><%= hint %></div>
+
+<div id="priorities-list" style="margin-top:12px; display:flex; flex-direction:column;">
+  <%= render partial: "plan_items/plan_item", collection: @priorities, as: :plan_item %>
+</div>
+
+<div style="display:flex; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid #EFE9E1;">
+  <span style="flex:none; width:28px; height:28px; border-radius:50%; border:2px dashed #C7BEB1; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:#C7BEB1;"><%= next_num %></span>
+  <%= form_with model: PlanItem.new, url: plan_items_path, class: "should-add-row", style: "flex:1; display:flex; align-items:center; gap:14px; border:none; padding:0;",
+      data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |f| %>
+    <%= f.hidden_field :date, value: @date %>
+    <%= f.hidden_field :kind, value: "priority" %>
+    <%= f.text_field :title, placeholder: placeholder, class: "should-add-input", style: "font-size:16px; font-weight:600;", autocomplete: "off", data: { reset_form_target: "input" } %>
+    <%= f.submit "Add", class: "should-add-btn" %>
+  <% end %>
+</div>
+
+<!-- Extra -->
+<div style="margin-top:30px; display:flex; align-items:center; justify-content:space-between;">
+  <div style="font-size:13px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#2D2925;">Extra</div>
+</div>
+<div style="font-size:13px; font-weight:600; color:#A89F92; margin-top:4px;">Nice-to-dos that aren't the main event.</div>
+
+<div id="extras-list" style="margin-top:12px; display:flex; flex-direction:column;">
+  <%= render partial: "plan_items/plan_item", collection: @extras, as: :plan_item %>
+</div>
+
+<div style="display:flex; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid #EFE9E1;">
+  <span style="flex:none; width:28px; height:28px; border-radius:50%; border:2px dashed #C7BEB1;"></span>
+  <%= form_with model: PlanItem.new, url: plan_items_path, style: "flex:1; display:flex; align-items:center; gap:14px; border:none; padding:0;",
+      data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |f| %>
+    <%= f.hidden_field :date, value: @date %>
+    <%= f.hidden_field :kind, value: "extra" %>
+    <%= f.text_field :title, placeholder: "Add an extra…", class: "should-add-input", style: "font-size:16px; font-weight:600;", autocomplete: "off", data: { reset_form_target: "input" } %>
+    <%= f.submit "Add", class: "should-add-btn" %>
+  <% end %>
+</div>
+
+<!-- Gratitude -->
+<% if current_user.gratitude_enabled %>
+  <div style="margin-top:30px; padding-top:22px; border-top:1px solid #ECE5DB;" data-controller="gratitude" data-gratitude-open-value="<%= !is_today %>">
+    <button data-action="click->gratitude#toggle" style="width:100%; border:none; background:transparent; cursor:pointer; padding:0; display:flex; align-items:center; justify-content:space-between;">
+      <div style="display:flex; align-items:center; gap:9px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#C2956F" stroke="none"><path d="M12 20.5l-1.45-1.32C5.4 14.5 2 11.4 2 7.6 2 4.9 4.1 3 6.7 3c1.6 0 3.1.75 4.05 1.95L12 6.3l1.25-1.35C14.2 3.75 15.7 3 17.3 3 19.9 3 22 4.9 22 7.6c0 3.8-3.4 6.9-8.55 11.58L12 20.5z"></path></svg>
+        <span style="font-size:13px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#2D2925;">Gratitude</span>
+        <% if @gratitude_items.any? %>
+          <span style="font-size:12px; font-weight:800; color:#B0A698; margin-left:2px;"><%= @gratitude_items.count %></span>
+        <% end %>
+      </div>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B0A698" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" data-gratitude-target="chevron" style="transition:transform .2s ease; transform:<%= is_today ? 'none' : 'rotate(180deg)' %>;"><polyline points="6,9 12,15 18,9"></polyline></svg>
+    </button>
+
+    <div data-gratitude-target="content" style="display:<%= is_today ? 'none' : 'block' %>;">
+      <div style="font-size:13px; font-weight:600; color:#A89F92; margin-top:8px;">
+        <%= @gratitude_items.any? ? "A few good things — big or small." : "What went right today? Name a few." %>
+      </div>
+
+      <div id="gratitude-list" style="margin-top:10px; display:flex; flex-direction:column;">
+        <%= render partial: "plan_items/gratitude_item", collection: @gratitude_items, as: :gratitude_item %>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:14px; padding:12px 0;">
+        <span style="flex:none; width:9px; height:9px; border-radius:50%; border:1.5px dashed #C7BEB1;"></span>
+        <%= form_with model: PlanItem.new, url: plan_items_path, style: "flex:1; display:flex; align-items:center; gap:14px; border:none; padding:0;",
+            data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |f| %>
+          <%= f.hidden_field :date, value: @date %>
+          <%= f.hidden_field :kind, value: "gratitude" %>
+          <%= f.text_field :title, placeholder: (@gratitude_items.any? ? "Add another…" : "Something you're grateful for…"), class: "should-add-input", style: "font-size:16px; font-weight:600;", autocomplete: "off", data: { reset_form_target: "input" } %>
+          <%= f.submit "Add", class: "should-add-btn" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

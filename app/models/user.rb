@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_many :shoulds, dependent: :destroy
+  has_many :plan_items, dependent: :destroy
 
   validates :provider, :uid, :email, presence: true
   validates :uid, uniqueness: { scope: :provider }

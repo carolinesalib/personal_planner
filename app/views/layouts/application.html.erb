@@ -36,12 +36,12 @@
           <span>Shoulds</span>
         <% end %>
 
-        <%= link_to "#", class: "planner-nav-item" do %>
+        <%= link_to today_path, class: "planner-nav-item #{current_page?(today_path) ? 'active' : ''}" do %>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"></circle><polyline points="8.5,12 11,14.5 15.5,9.5"></polyline></svg>
           <span>Today</span>
         <% end %>
 
-        <%= link_to "#", class: "planner-nav-item" do %>
+        <%= link_to planner_path, class: "planner-nav-item #{request.path.start_with?('/planner') ? 'active' : ''}" do %>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="3"></rect><line x1="4" y1="9.5" x2="20" y2="9.5"></line><line x1="8.5" y1="3.5" x2="8.5" y2="6.5"></line><line x1="15.5" y1="3.5" x2="15.5" y2="6.5"></line></svg>
           <span>Planner</span>
         <% end %>

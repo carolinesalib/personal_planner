@@ -1,0 +1,81 @@
+<%
+  today = Date.current
+  prev_month = @first_of_month - 1.month
+  next_month = @first_of_month + 1.month
+%>
+
+<div>
+  <div style="margin-top:6px;">
+    <div style="font-size:12px; font-weight:800; letter-spacing:0.16em; text-transform:uppercase; color:#B0A698;">Planner</div>
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
+      <div style="font-size:28px; font-weight:900; color:#2D2925; line-height:1;"><%= @month_label %></div>
+      <div style="display:flex; gap:8px;">
+        <%= link_to planner_path(year: prev_month.year, month: prev_month.month), style: "width:36px; height:36px; border-radius:12px; border:1px solid #E4DDD2; background:#FFFFFF; cursor:pointer; font-size:17px; font-weight:800; color:#6B6258; display:flex; align-items:center; justify-content:center; text-decoration:none;" do %>
+          &#8249;
+        <% end %>
+        <%= link_to planner_path(year: next_month.year, month: next_month.month), style: "width:36px; height:36px; border-radius:12px; border:1px solid #E4DDD2; background:#FFFFFF; cursor:pointer; font-size:17px; font-weight:800; color:#6B6258; display:flex; align-items:center; justify-content:center; text-decoration:none;" do %>
+          &#8250;
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:18px; display:grid; grid-template-columns:repeat(7,1fr); gap:2px 0;">
+    <% %w[S M T W T F S].each do |day_name| %>
+      <div style="text-align:center; font-size:11px; font-weight:800; color:#BCB3A6; padding-bottom:8px;"><%= day_name %></div>
+    <% end %>
+
+    <% @calendar_cells.each do |cell| %>
+      <%
+        in_month = cell[:in_month]
+        is_today = cell[:is_today]
+        has_plan = cell[:has_plan]
+        deg = cell[:deg]
+
+        wrap_bg = is_today ? "#F2ECE3" : "transparent"
+        ring_bg = has_plan ? "conic-gradient(#2D2925 #{deg}deg, #DDD5C9 #{deg}deg)" : "transparent"
+        inner_bg = has_plan ? "#FBF8F4" : "transparent"
+        inner_border = (is_today && !has_plan) ? "2px solid #2D2925" : "none"
+        num_weight = is_today ? 900 : (has_plan ? 700 : 600)
+        num_color = in_month ? (is_today ? "#2D2925" : "#3A332C") : "#D2C9BC"
+      %>
+
+      <% if in_month %>
+        <%= link_to planner_day_path(date: cell[:date]), style: "position:relative; height:46px; display:flex; align-items:center; justify-content:center; border:none; background:#{wrap_bg}; border-radius:14px; cursor:pointer; padding:0; text-decoration:none;" do %>
+          <div style="width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:<%= ring_bg %>;">
+            <div style="width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:<%= inner_bg %>; border:<%= inner_border %>;">
+              <span style="font-size:14px; font-weight:<%= num_weight %>; color:<%= num_color %>;"><%= cell[:day] %></span>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div style="position:relative; height:46px; display:flex; align-items:center; justify-content:center; opacity:0.5;">
+          <div style="width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center;">
+            <div style="width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center;">
+              <span style="font-size:14px; font-weight:600; color:#D2C9BC;"><%= cell[:day] %></span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <!-- Legend -->
+  <div style="margin-top:24px; padding-top:18px; border-top:1px solid #ECE5DB; display:flex; flex-direction:column; gap:12px;">
+    <div style="font-size:12px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#B0A698;">Each ring = a day's progress</div>
+    <div style="display:flex; gap:18px;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="width:22px; height:22px; border-radius:50%; background:conic-gradient(#2D2925 0deg, #DDD5C9 0deg);"><div style="width:14px; height:14px; margin:4px; border-radius:50%; background:#FBF8F4;"></div></div>
+        <span style="font-size:12px; font-weight:700; color:#8A8076;">Planned</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="width:22px; height:22px; border-radius:50%; background:conic-gradient(#2D2925 180deg, #DDD5C9 180deg);"><div style="width:14px; height:14px; margin:4px; border-radius:50%; background:#FBF8F4;"></div></div>
+        <span style="font-size:12px; font-weight:700; color:#8A8076;">Halfway</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="width:22px; height:22px; border-radius:50%; background:#2D2925;"><div style="width:14px; height:14px; margin:4px; border-radius:50%; background:#FBF8F4;"></div></div>
+        <span style="font-size:12px; font-weight:700; color:#8A8076;">Done</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<%= turbo_frame_tag gratitude_item do %>
+  <div class="should-item" id="<%= dom_id(gratitude_item) %>">
+    <span style="flex:none; width:9px; height:9px; border-radius:50%; background:#C2956F;"></span>
+
+    <span style="flex:1; font-size:16px; font-weight:600; color:#5C5346; cursor:text;"
+          data-controller="inline-edit"
+          data-inline-edit-url-value="<%= plan_item_path(gratitude_item) %>"
+          data-inline-edit-model-value="plan_item"
+          data-action="click->inline-edit#edit">
+      <%= gratitude_item.title %>
+    </span>
+
+    <button class="should-remove"
+            data-action="click->delete-confirm#show"
+            data-delete-confirm-title-param="<%= gratitude_item.title %>"
+            data-delete-confirm-url-param="<%= plan_item_path(gratitude_item) %>">&#215;</button>
+  </div>
+<% end %>

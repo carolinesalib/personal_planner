@@ -1,0 +1,25 @@
+<%= turbo_frame_tag plan_item do %>
+  <div class="should-item" id="<%= dom_id(plan_item) %>">
+    <%= button_to toggle_plan_item_path(plan_item), method: :patch, form: { data: { turbo_frame: "_top" } },
+        style: "flex:none; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px; font-weight:800; transition:all .2s ease; border:2px solid #{plan_item.completed? ? '#2D2925' : '#CFC6BA'}; background:#{plan_item.completed? ? '#2D2925' : 'transparent'}; color:#{plan_item.completed? ? '#FBF8F4' : (plan_item.kind == 'priority' ? '#9A9183' : 'transparent')}; padding:0;" do %>
+      <% if plan_item.completed? %>
+        &#10003;
+      <% elsif plan_item.kind == "priority" && local_assigns[:plan_item_counter] %>
+        <%= plan_item_counter + 1 %>
+      <% end %>
+    <% end %>
+
+    <span class="should-text<%= ' should-text--done' if plan_item.completed? %>"
+          data-controller="inline-edit"
+          data-inline-edit-url-value="<%= plan_item_path(plan_item) %>"
+          data-inline-edit-model-value="plan_item"
+          data-action="click->inline-edit#edit">
+      <%= plan_item.title %>
+    </span>
+
+    <button class="should-remove"
+            data-action="click->delete-confirm#show"
+            data-delete-confirm-title-param="<%= plan_item.title %>"
+            data-delete-confirm-url-param="<%= plan_item_path(plan_item) %>">&#215;</button>
+  </div>
+<% end %>

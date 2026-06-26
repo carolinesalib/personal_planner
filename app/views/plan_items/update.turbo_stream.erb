@@ -1,0 +1,7 @@
+<%= turbo_stream.replace @plan_item do %>
+  <% if @plan_item.kind == "gratitude" %>
+    <%= render partial: "plan_items/gratitude_item", locals: { gratitude_item: @plan_item } %>
+  <% else %>
+    <%= render partial: "plan_items/plan_item", locals: { plan_item: @plan_item } %>
+  <% end %>
+<% end %>

@@ -18,6 +18,16 @@ Rails.application.routes.draw do
     end
   end
 
+  get "today", to: "today#show"
+  get "planner", to: "planner#index"
+  get "planner/:date", to: "planner#show", as: :planner_day, constraints: { date: /\d{4}-\d{2}-\d{2}/ }
+
+  resources :plan_items, only: %i[create update destroy] do
+    member do
+      patch :toggle
+    end
+  end
+
   root "shoulds#index"
 
   get "up" => "rails/health#show", as: :rails_health_check
