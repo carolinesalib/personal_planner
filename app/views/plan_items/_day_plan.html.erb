@@ -49,16 +49,14 @@
   <%= render partial: "plan_items/plan_item", collection: @priorities, as: :plan_item %>
 </div>
 
-<div style="display:flex; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid #EFE9E1;">
+<%= form_with model: PlanItem.new, url: plan_items_path, class: "plan-add-row",
+    data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |f| %>
   <span style="flex:none; width:28px; height:28px; border-radius:50%; border:2px dashed #C7BEB1; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:#C7BEB1;"><%= next_num %></span>
-  <%= form_with model: PlanItem.new, url: plan_items_path, class: "should-add-row", style: "flex:1; display:flex; align-items:center; gap:14px; border:none; padding:0;",
-      data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |f| %>
-    <%= f.hidden_field :date, value: @date %>
-    <%= f.hidden_field :kind, value: "priority" %>
-    <%= f.text_field :title, placeholder: placeholder, class: "should-add-input", style: "font-size:16px; font-weight:600;", autocomplete: "off", data: { reset_form_target: "input" } %>
-    <%= f.submit "Add", class: "should-add-btn" %>
-  <% end %>
-</div>
+  <%= f.hidden_field :date, value: @date %>
+  <%= f.hidden_field :kind, value: "priority" %>
+  <%= f.text_field :title, placeholder: placeholder, class: "should-add-input", style: "font-size:16px; font-weight:600;", autocomplete: "off", data: { reset_form_target: "input" } %>
+  <%= f.submit "Add", class: "should-add-btn" %>
+<% end %>
 
 <!-- Extra -->
 <div style="margin-top:30px; display:flex; align-items:center; justify-content:space-between;">
@@ -70,16 +68,14 @@
   <%= render partial: "plan_items/plan_item", collection: @extras, as: :plan_item %>
 </div>
 
-<div style="display:flex; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid #EFE9E1;">
+<%= form_with model: PlanItem.new, url: plan_items_path, class: "plan-add-row",
+    data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |f| %>
   <span style="flex:none; width:28px; height:28px; border-radius:50%; border:2px dashed #C7BEB1;"></span>
-  <%= form_with model: PlanItem.new, url: plan_items_path, style: "flex:1; display:flex; align-items:center; gap:14px; border:none; padding:0;",
-      data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |f| %>
-    <%= f.hidden_field :date, value: @date %>
-    <%= f.hidden_field :kind, value: "extra" %>
-    <%= f.text_field :title, placeholder: "Add an extra…", class: "should-add-input", style: "font-size:16px; font-weight:600;", autocomplete: "off", data: { reset_form_target: "input" } %>
-    <%= f.submit "Add", class: "should-add-btn" %>
-  <% end %>
-</div>
+  <%= f.hidden_field :date, value: @date %>
+  <%= f.hidden_field :kind, value: "extra" %>
+  <%= f.text_field :title, placeholder: "Add an extra…", class: "should-add-input", style: "font-size:16px; font-weight:600;", autocomplete: "off", data: { reset_form_target: "input" } %>
+  <%= f.submit "Add", class: "should-add-btn" %>
+<% end %>
 
 <!-- Gratitude -->
 <% if current_user.gratitude_enabled %>
@@ -104,16 +100,14 @@
         <%= render partial: "plan_items/gratitude_item", collection: @gratitude_items, as: :gratitude_item %>
       </div>
 
-      <div style="display:flex; align-items:center; gap:14px; padding:12px 0;">
+      <%= form_with model: PlanItem.new, url: plan_items_path, class: "plan-add-row", style: "border-bottom:none;",
+          data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |f| %>
         <span style="flex:none; width:9px; height:9px; border-radius:50%; border:1.5px dashed #C7BEB1;"></span>
-        <%= form_with model: PlanItem.new, url: plan_items_path, style: "flex:1; display:flex; align-items:center; gap:14px; border:none; padding:0;",
-            data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |f| %>
-          <%= f.hidden_field :date, value: @date %>
-          <%= f.hidden_field :kind, value: "gratitude" %>
-          <%= f.text_field :title, placeholder: (@gratitude_items.any? ? "Add another…" : "Something you're grateful for…"), class: "should-add-input", style: "font-size:16px; font-weight:600;", autocomplete: "off", data: { reset_form_target: "input" } %>
-          <%= f.submit "Add", class: "should-add-btn" %>
-        <% end %>
-      </div>
+        <%= f.hidden_field :date, value: @date %>
+        <%= f.hidden_field :kind, value: "gratitude" %>
+        <%= f.text_field :title, placeholder: (@gratitude_items.any? ? "Add another…" : "Something you're grateful for…"), class: "should-add-input", style: "font-size:16px; font-weight:600;", autocomplete: "off", data: { reset_form_target: "input" } %>
+        <%= f.submit "Add", class: "should-add-btn" %>
+      <% end %>
     </div>
   </div>
 <% end %>
