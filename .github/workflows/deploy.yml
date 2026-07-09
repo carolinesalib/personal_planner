@@ -7,11 +7,15 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    needs: [] # runs independently; ci.yml checks are enforced via branch protection
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
 
       - name: Install Railway CLI
         run: npm install -g @railway/cli
@@ -20,8 +24,3 @@ jobs:
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: railway up --service ${{ secrets.RAILWAY_SERVICE_ID }}
-
-      - name: Run migrations
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway run --service ${{ secrets.RAILWAY_SERVICE_ID }} bin/rails db:migrate
