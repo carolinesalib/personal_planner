@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_26_032444) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_09_023608) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -49,6 +49,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_26_032444) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "gratitude_enabled", default: false, null: false
+    t.string "locale", default: "en", null: false
+    t.boolean "onboarding_completed", default: false, null: false
     t.index ["email"], name: "index_users_on_email"
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
   end
