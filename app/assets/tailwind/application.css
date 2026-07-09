@@ -227,3 +227,34 @@
   padding: 13px 0;
   border-bottom: 1px solid var(--color-planner-border);
 }
+
+.onboarding-toggle {
+  width: 48px;
+  height: 28px;
+  background: #C7BEB1;
+  border-radius: 99px;
+  transition: background 0.2s;
+  position: relative;
+  flex: none;
+}
+
+.onboarding-toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(45,41,37,0.2);
+}
+
+.onboarding-gratitude-input:checked + .onboarding-toggle {
+  background: #2D2925;
+}
+
+.onboarding-gratitude-input:checked + .onboarding-toggle::after {
+  transform: translateX(20px);
+}

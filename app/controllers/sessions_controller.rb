@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
   def create
     user = User.from_omniauth(request.env["omniauth.auth"])
     session[:user_id] = user.id
-    redirect_to root_path
+    redirect_to user.onboarding_completed? ? root_path : onboarding_path
   end
 
   def destroy

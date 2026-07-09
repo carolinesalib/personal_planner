@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   get "auth/:provider/callback", to: "sessions#create"
   get "auth/failure", to: "sessions#failure"
 
+  get "onboarding", to: "onboarding#show", as: :onboarding
+  post "onboarding/complete", to: "onboarding#complete", as: :onboarding_complete
+
   resource :settings, only: :show do
     patch :toggle_gratitude
   end

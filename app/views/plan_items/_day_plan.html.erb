@@ -10,10 +10,10 @@
   p_count = @priorities.count
   chip = "#{p_count} / 5"
   hint = case p_count
-         when 0 then "Aim for about five a day."
-         when 1..4 then "A few more to reach five — or stop here."
-         when 5 then "Five — a full day."
-         else "A big day. Trim if you can."
+         when 0 then "Five priorities is a good day."
+         when 1..4 then "A few more to reach five, or stop here."
+         when 5 then "Five. A focused day."
+         else "Over five. Trim if you can."
          end
   next_num = p_count >= 9 ? "+" : (p_count + 1).to_s
   placeholder = p_count >= 5 ? "Add another priority…" : "Priority #{p_count + 1}…"
@@ -62,7 +62,7 @@
 <div style="margin-top:30px; display:flex; align-items:center; justify-content:space-between;">
   <div style="font-size:13px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; color:#2D2925;">Extra</div>
 </div>
-<div style="font-size:13px; font-weight:600; color:#A89F92; margin-top:4px;">Nice-to-dos that aren't the main event.</div>
+<div style="font-size:13px; font-weight:600; color:#A89F92; margin-top:4px;">Nice-to-dos that are not the main event.</div>
 
 <div id="extras-list" style="margin-top:12px; display:flex; flex-direction:column;">
   <%= render partial: "plan_items/plan_item", collection: @extras, as: :plan_item %>
@@ -93,7 +93,7 @@
 
     <div data-gratitude-target="content" style="display:<%= is_today ? 'none' : 'block' %>;">
       <div style="font-size:13px; font-weight:600; color:#A89F92; margin-top:8px;">
-        <%= @gratitude_items.any? ? "A few good things — big or small." : "What went right today? Name a few." %>
+        <%= @gratitude_items.any? ? "A few good things, big or small." : "What went right today? Aim for 3." %>
       </div>
 
       <div id="gratitude-list" style="margin-top:10px; display:flex; flex-direction:column;">
