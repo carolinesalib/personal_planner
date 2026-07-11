@@ -12,7 +12,8 @@ class SessionsController < ApplicationController
 
     if session.delete(:native_auth)
       login_token = LoginToken.create!(user: user)
-      redirect_to "shouldplanner://auth/success?token=#{login_token.token}", allow_other_host: true
+      native_url = URI::Generic.build(scheme: "shouldplanner", host: "auth", path: "/success", query: "token=#{ERB::Util.url_encode(login_token.token)}").to_s
+      redirect_to native_url, allow_other_host: true
     else
       session[:user_id] = user.id
       redirect_to user.onboarding_completed? ? root_path : onboarding_path
