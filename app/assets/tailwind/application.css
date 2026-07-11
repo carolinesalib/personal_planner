@@ -54,7 +54,7 @@
 }
 
 .planner-nav {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
@@ -64,13 +64,16 @@
   padding: 12px 0 28px;
   background: var(--color-planner-card);
   border-top: 1px solid var(--color-planner-border);
+  z-index: 10;
 }
 
 @media (min-width: 480px) {
   .planner-nav {
+    position: absolute;
     border-radius: 0 0 48px 48px;
   }
 }
+
 
 .planner-nav-item {
   display: flex;

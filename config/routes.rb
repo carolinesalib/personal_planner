@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   delete "logout", to: "sessions#destroy", as: :logout
   get "auth/:provider/callback", to: "sessions#create"
   get "auth/failure", to: "sessions#failure"
+  get "auth/token_login", to: "sessions#token_login"
 
   get "onboarding", to: "onboarding#show", as: :onboarding
   post "onboarding/complete", to: "onboarding#complete", as: :onboarding_complete

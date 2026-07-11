@@ -1,0 +1,35 @@
+{
+  "rules": [
+    {
+      "patterns": ["^/today$", "^/shoulds$", "^/planner$", "^/planner/"],
+      "properties": {
+        "presentation": "default"
+      }
+    },
+    {
+      "patterns": ["/completed$"],
+      "properties": {
+        "context": "modal"
+      }
+    },
+    {
+      "patterns": ["^/login$"],
+      "properties": {
+        "presentation": "none"
+      }
+    },
+    {
+      "patterns": ["^/onboarding$"],
+      "properties": {
+        "context": "modal",
+        "modal_dismiss_gesture_enabled": false
+      }
+    },
+    {
+      "patterns": ["^/settings$"],
+      "properties": {
+        "context": "modal"
+      }
+    }
+  ]
+}
