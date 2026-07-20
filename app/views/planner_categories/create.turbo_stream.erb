@@ -1,0 +1,3 @@
+<%= turbo_stream.append "planner-categories" do %>
+  <%= render partial: "planner_categories/category", locals: { category: @category } %>
+<% end %>

@@ -261,3 +261,436 @@
 .onboarding-gratitude-input:checked + .onboarding-toggle::after {
   transform: translateX(20px);
 }
+
+/* ---------- Desktop macro planner (Week / Quarter / Year) ---------- */
+
+.planner-desktop-body {
+  background: var(--color-planner-bg);
+  font-family: var(--font-sans);
+  margin: 0;
+}
+
+.planner-desktop-shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.planner-sidebar {
+  display: none;
+}
+
+.planner-mobile-back {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 16px 20px 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-planner-action);
+  text-decoration: none;
+}
+
+.planner-desktop-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  padding: 24px 20px 100px;
+}
+
+.planner-desktop-content {
+  width: 100%;
+  max-width: 760px;
+}
+
+.planner-nav--overlay {
+  position: fixed;
+}
+
+@media (min-width: 1024px) {
+  .planner-desktop-shell {
+    flex-direction: row;
+  }
+
+  .planner-sidebar {
+    display: flex;
+    flex: none;
+    width: 264px;
+    background: var(--color-planner-text);
+    flex-direction: column;
+    padding: 26px 18px;
+  }
+
+  .planner-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 8px 22px;
+  }
+
+  .planner-sidebar-logo {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 13px;
+    background: var(--color-planner-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    font-weight: 900;
+    font-size: 24px;
+    color: var(--color-planner-text);
+  }
+
+  .planner-sidebar-logo-dot {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #C2956F;
+  }
+
+  .planner-sidebar-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--color-planner-card);
+    line-height: 1.1;
+  }
+
+  .planner-sidebar-subtitle {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8F887C;
+  }
+
+  .planner-sidebar-section {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6E6759;
+    padding: 22px 10px 8px;
+  }
+
+  .planner-sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 12px;
+    padding: 11px 12px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #B0A698;
+    margin-bottom: 2px;
+    text-decoration: none;
+  }
+
+  .planner-sidebar-item.active {
+    background: #3A352F;
+    color: var(--color-planner-card);
+  }
+
+  .planner-sidebar-item.active .planner-sidebar-dot {
+    background: #C2956F;
+  }
+
+  .planner-sidebar-item--mobile {
+    color: #6E6759;
+    cursor: default;
+  }
+
+  .planner-sidebar-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #5A5347;
+    flex: none;
+  }
+
+  .planner-sidebar-label {
+    flex: 1;
+    text-align: left;
+  }
+
+  .planner-sidebar-badge {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #8F887C;
+    background: #3A352F;
+    border-radius: 999px;
+    padding: 3px 8px;
+  }
+
+  .planner-sidebar-spacer {
+    flex: 1;
+  }
+
+  .planner-sidebar-footer {
+    font-size: 12px;
+    font-weight: 700;
+    color: #6E6759;
+    padding: 10px;
+  }
+
+  .planner-mobile-back {
+    display: none;
+  }
+
+  .planner-desktop-main {
+    overflow-y: auto;
+    padding: 52px 40px 100px;
+  }
+
+  .planner-nav--overlay {
+    display: none;
+  }
+}
+
+/* ---------- Shared macro-planner page content (week/quarter/year) ---------- */
+
+.macro-period-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.macro-period-kicker {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-planner-subtle);
+  text-decoration: none;
+}
+
+a.macro-period-kicker {
+  text-decoration: underline;
+  text-decoration-color: #DCC3AC;
+}
+
+.macro-period-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.macro-nav-btn {
+  border: 1px solid var(--color-planner-border-strong);
+  background: var(--color-planner-card);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #6B6258;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.macro-nav-arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--color-planner-border-strong);
+  background: var(--color-planner-card);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 800;
+  color: #6B6258;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.macro-period-title {
+  margin-top: 14px;
+  font-size: 44px;
+  font-weight: 900;
+  color: var(--color-planner-text);
+  line-height: 1.03;
+}
+
+.macro-period-subtitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-planner-muted);
+  margin-top: 6px;
+}
+
+.macro-mission-card {
+  margin-top: 26px;
+  background: var(--color-planner-card);
+  border: 1px solid var(--color-planner-border-strong);
+  border-radius: 20px;
+  padding: 20px 22px;
+  box-shadow: 0 1px 2px rgba(45, 41, 37, 0.04), 0 8px 20px rgba(45, 41, 37, 0.05);
+}
+
+.macro-mission-label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #C2956F;
+}
+
+.macro-mission-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  margin-top: 8px;
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--color-planner-text);
+  font-family: inherit;
+}
+
+.macro-chip-row {
+  margin-top: 22px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.macro-chip {
+  border: 1px solid var(--color-planner-border-strong);
+  background: var(--color-planner-card);
+  border-radius: 999px;
+  padding: 7px 13px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #6B6258;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.macro-section {
+  margin-top: 30px;
+}
+
+.macro-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.macro-section-title {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--color-planner-text);
+  cursor: text;
+}
+
+.macro-section-title-input {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--color-planner-text);
+  border: none;
+  outline: none;
+  background: transparent;
+  border-bottom: 2px solid var(--color-planner-border-strong);
+  padding-bottom: 2px;
+  font-family: inherit;
+}
+
+.macro-section-remove {
+  border: none;
+  background: transparent;
+  color: var(--color-planner-remove);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.macro-goals-label {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-planner-text);
+  margin-top: 30px;
+}
+
+.macro-add-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 0;
+}
+
+.macro-add-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-planner-text);
+  font-family: inherit;
+}
+
+.macro-add-btn {
+  flex: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-planner-action);
+  font-family: inherit;
+}
+
+.macro-add-category-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-planner-action);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+  font-family: inherit;
+}
+
+.macro-add-category-row {
+  margin-top: 30px;
+  padding-top: 22px;
+  border-top: 1px solid var(--color-planner-border-strong);
+}
+
+.macro-dashed-circle {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px dashed var(--color-planner-ring);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--color-planner-ring);
+  flex: none;
+}
+
+.macro-dashed-circle--sm {
+  width: 24px;
+  height: 24px;
+}

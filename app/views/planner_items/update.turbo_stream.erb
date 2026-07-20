@@ -1,0 +1,3 @@
+<%= turbo_stream.replace @item do %>
+  <%= render partial: "planner_items/planner_item", locals: { planner_item: @item } %>
+<% end %>

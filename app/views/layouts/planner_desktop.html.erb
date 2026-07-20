@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Personal Planner" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icon.png?v=2">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="planner-desktop-body">
+    <div class="planner-desktop-shell" data-controller="delete-confirm">
+      <!-- Sidebar: desktop only (hidden below breakpoint via CSS) -->
+      <aside class="planner-sidebar">
+        <div class="planner-sidebar-brand">
+          <div class="planner-sidebar-logo">
+            S
+            <span class="planner-sidebar-logo-dot"></span>
+          </div>
+          <div>
+            <div class="planner-sidebar-title">Shoulds</div>
+            <div class="planner-sidebar-subtitle">Web</div>
+          </div>
+        </div>
+
+        <div class="planner-sidebar-section">Macro planning</div>
+        <%= link_to planner_week_path, class: "planner-sidebar-item #{'active' if request.path.start_with?('/plan/week')}" do %>
+          <span class="planner-sidebar-dot"></span><span class="planner-sidebar-label">Week</span>
+        <% end %>
+        <%= link_to planner_quarter_path, class: "planner-sidebar-item #{'active' if request.path.start_with?('/plan/quarter')}" do %>
+          <span class="planner-sidebar-dot"></span><span class="planner-sidebar-label">Quarter</span>
+        <% end %>
+        <%= link_to planner_year_path, class: "planner-sidebar-item #{'active' if request.path.start_with?('/plan/year')}" do %>
+          <span class="planner-sidebar-dot"></span><span class="planner-sidebar-label">Year</span>
+        <% end %>
+
+        <div class="planner-sidebar-section">Daily &amp; mobile</div>
+        <div class="planner-sidebar-item planner-sidebar-item--mobile"><span class="planner-sidebar-label">Shoulds</span><span class="planner-sidebar-badge">Mobile</span></div>
+        <div class="planner-sidebar-item planner-sidebar-item--mobile"><span class="planner-sidebar-label">Today</span><span class="planner-sidebar-badge">Mobile</span></div>
+        <% if current_user.gratitude_enabled %>
+          <div class="planner-sidebar-item planner-sidebar-item--mobile"><span class="planner-sidebar-label">Gratitude</span><span class="planner-sidebar-badge">Mobile</span></div>
+        <% end %>
+
+        <div class="planner-sidebar-spacer"></div>
+        <div class="planner-sidebar-footer">Shoulds planner &middot; web v0.1</div>
+      </aside>
+
+      <!-- Mobile top link back to the phone-shell planner tab (hidden on desktop) -->
+      <%= link_to planner_path, class: "planner-mobile-back" do %>
+        &#8592; Planner
+      <% end %>
+
+      <main class="planner-desktop-main">
+        <div class="planner-desktop-content">
+          <%= yield %>
+        </div>
+      </main>
+
+      <%= render "shared/delete_confirm" %>
+
+      <!-- Bottom tab bar: mobile only (hidden on desktop) -->
+      <nav class="planner-nav planner-nav--overlay">
+        <%= link_to shoulds_path, class: "planner-nav-item" do %>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="7" r="1.4"></circle><circle cx="5" cy="12" r="1.4"></circle><circle cx="5" cy="17" r="1.4"></circle><line x1="10" y1="7" x2="19" y2="7"></line><line x1="10" y1="12" x2="19" y2="12"></line><line x1="10" y1="17" x2="19" y2="17"></line></svg>
+          <span>Shoulds</span>
+        <% end %>
+
+        <%= link_to today_path, class: "planner-nav-item" do %>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"></circle><polyline points="8.5,12 11,14.5 15.5,9.5"></polyline></svg>
+          <span>Today</span>
+        <% end %>
+
+        <%= link_to planner_path, class: "planner-nav-item active" do %>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="3"></rect><line x1="4" y1="9.5" x2="20" y2="9.5"></line><line x1="8.5" y1="3.5" x2="8.5" y2="6.5"></line><line x1="15.5" y1="3.5" x2="15.5" y2="6.5"></line></svg>
+          <span>Planner</span>
+        <% end %>
+
+        <%= link_to settings_path, class: "planner-nav-item" do %>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="8" x2="20" y2="8"></line><line x1="4" y1="16" x2="20" y2="16"></line><circle cx="10" cy="8" r="2.6" fill="#FBF8F4"></circle><circle cx="15" cy="16" r="2.6" fill="#FBF8F4"></circle></svg>
+          <span>Settings</span>
+        <% end %>
+      </nav>
+    </div>
+  </body>
+</html>
