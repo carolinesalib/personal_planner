@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_09_144209) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_19_232500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -35,6 +35,41 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_09_144209) do
     t.datetime "updated_at", null: false
     t.index ["user_id", "date", "kind"], name: "index_plan_items_on_user_id_and_date_and_kind"
     t.index ["user_id"], name: "index_plan_items_on_user_id"
+  end
+
+  create_table "planner_categories", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "period_type", null: false
+    t.string "period_key", null: false
+    t.string "title", null: false
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "period_type", "period_key"], name: "index_planner_categories_on_user_and_period"
+    t.index ["user_id"], name: "index_planner_categories_on_user_id"
+  end
+
+  create_table "planner_items", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "planner_category_id", null: false
+    t.string "title", null: false
+    t.boolean "completed", default: false, null: false
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["planner_category_id"], name: "index_planner_items_on_planner_category_id"
+    t.index ["user_id"], name: "index_planner_items_on_user_id"
+  end
+
+  create_table "planner_periods", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "period_type", null: false
+    t.string "period_key", null: false
+    t.string "mission"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "period_type", "period_key"], name: "index_planner_periods_on_user_and_period", unique: true
+    t.index ["user_id"], name: "index_planner_periods_on_user_id"
   end
 
   create_table "shoulds", force: :cascade do |t|
@@ -67,5 +102,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_09_144209) do
 
   add_foreign_key "login_tokens", "users"
   add_foreign_key "plan_items", "users"
+  add_foreign_key "planner_categories", "users"
+  add_foreign_key "planner_items", "planner_categories"
+  add_foreign_key "planner_items", "users"
+  add_foreign_key "planner_periods", "users"
   add_foreign_key "shoulds", "users"
 end

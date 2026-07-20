@@ -1,0 +1,42 @@
+<% content_for :title, "Week #{@monday.cweek} · Shoulds" %>
+
+<div class="macro-period-nav">
+  <%= link_to "#{@monday.year} Quarter #{Planner::PeriodKey.quarter_of(@monday)}", planner_quarter_path, class: "macro-period-kicker" %>
+  <div class="macro-period-nav-actions">
+    <%= link_to "This week", @this_path, class: "macro-nav-btn" %>
+    <%= link_to "‹", @prev_path, class: "macro-nav-arrow" %>
+    <%= link_to "›", @next_path, class: "macro-nav-arrow" %>
+  </div>
+</div>
+
+<div class="macro-period-title"><%= @monday.year %> Week <%= @monday.cweek %></div>
+<div class="macro-period-subtitle">
+  <% if @monday.month == @sunday.month %>
+    <%= @monday.strftime("%b %-d") %> – <%= @sunday.strftime("%-d") %>
+  <% else %>
+    <%= @monday.strftime("%b %-d") %> – <%= @sunday.strftime("%b %-d") %>
+  <% end %>
+</div>
+
+<div class="macro-mission-card">
+  <div class="macro-mission-label">Weekly challenge</div>
+  <%= text_field_tag "mission", @period.mission, placeholder: "What’s this week’s mission?", class: "macro-mission-input",
+      autocomplete: "off",
+      data: { controller: "autosave-field", autosave_field_url_value: planner_period_path(@period),
+              action: "blur->autosave-field#save keydown.enter->autosave-field#saveOnEnter" } %>
+</div>
+
+<div id="planner-categories">
+  <%= render partial: "planner_categories/category", collection: @categories, as: :category %>
+</div>
+
+<div class="macro-add-category-row">
+  <%= form_with model: PlannerCategory.new, url: planner_categories_path, class: "macro-add-category-form",
+      data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |f| %>
+    <%= f.hidden_field :period_type, value: "week" %>
+    <%= f.hidden_field :period_key, value: @period_key %>
+    <span class="macro-dashed-circle"></span>
+    <%= f.text_field :title, placeholder: "Category name…", class: "macro-add-input", autocomplete: "off", data: { reset_form_target: "input" } %>
+    <%= f.submit "Add category", class: "macro-add-btn" %>
+  <% end %>
+</div>

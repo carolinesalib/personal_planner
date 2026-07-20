@@ -1,0 +1,27 @@
+<div class="macro-section" id="<%= dom_id(category) %>">
+  <div class="macro-section-header">
+    <span class="macro-section-title"
+          data-controller="inline-edit"
+          data-inline-edit-url-value="<%= planner_category_path(category) %>"
+          data-inline-edit-model-value="planner_category"
+          data-action="click->inline-edit#edit">
+      <%= category.title %>
+    </span>
+    <button class="macro-section-remove"
+            data-action="click->delete-confirm#show"
+            data-delete-confirm-title-param="<%= category.title %>"
+            data-delete-confirm-url-param="<%= planner_category_path(category) %>">Remove</button>
+  </div>
+
+  <div id="<%= dom_id(category, :items) %>">
+    <%= render partial: "planner_items/planner_item", collection: category.planner_items, as: :planner_item %>
+  </div>
+
+  <%= form_with model: PlannerItem.new, url: planner_items_path, class: "macro-add-row",
+      data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |f| %>
+    <span class="macro-dashed-circle macro-dashed-circle--sm"></span>
+    <%= f.hidden_field :planner_category_id, value: category.id %>
+    <%= f.text_field :title, placeholder: "Add an item…", class: "macro-add-input", autocomplete: "off", data: { reset_form_target: "input" } %>
+    <%= f.submit "Add", class: "macro-add-btn" %>
+  <% end %>
+</div>

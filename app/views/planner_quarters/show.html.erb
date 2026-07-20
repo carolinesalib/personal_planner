@@ -1,0 +1,39 @@
+<% content_for :title, "#{@year} Quarter #{@quarter} · Shoulds" %>
+
+<div class="macro-period-nav">
+  <div class="macro-period-kicker">Quarter</div>
+  <div class="macro-period-nav-actions">
+    <%= link_to "This quarter", @this_path, class: "macro-nav-btn" %>
+    <%= link_to "‹", @prev_path, class: "macro-nav-arrow" %>
+    <%= link_to "›", @next_path, class: "macro-nav-arrow" %>
+  </div>
+</div>
+
+<div class="macro-period-title"><%= @year %> Quarter <%= @quarter %></div>
+<% q_start_month = ((@quarter - 1) * 3) + 1 %>
+<div class="macro-period-subtitle">
+  <%= Date::MONTHNAMES[q_start_month] %> – <%= Date::MONTHNAMES[q_start_month + 2] %>
+</div>
+
+<div class="macro-chip-row">
+  <% q_start = Planner::PeriodKey.monday_of(Date.new(@year, q_start_month, 1)) %>
+  <% 13.times do |i| %>
+    <% week_monday = q_start + (i * 7) %>
+    <%= link_to "W#{week_monday.cweek}", planner_week_on_path(date: week_monday.iso8601), class: "macro-chip" %>
+  <% end %>
+</div>
+
+<div id="planner-categories">
+  <%= render partial: "planner_categories/category", collection: @categories, as: :category %>
+</div>
+
+<div class="macro-add-category-row">
+  <%= form_with model: PlannerCategory.new, url: planner_categories_path, class: "macro-add-category-form",
+      data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |f| %>
+    <%= f.hidden_field :period_type, value: "quarter" %>
+    <%= f.hidden_field :period_key, value: @period_key %>
+    <span class="macro-dashed-circle"></span>
+    <%= f.text_field :title, placeholder: "Category name…", class: "macro-add-input", autocomplete: "off", data: { reset_form_target: "input" } %>
+    <%= f.submit "Add category", class: "macro-add-btn" %>
+  <% end %>
+</div>

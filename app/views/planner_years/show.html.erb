@@ -1,0 +1,33 @@
+<% content_for :title, "#{@year} · Shoulds" %>
+
+<div class="macro-period-nav">
+  <div class="macro-period-kicker">Year</div>
+  <div class="macro-period-nav-actions">
+    <%= link_to "This year", @this_path, class: "macro-nav-btn" %>
+    <%= link_to "‹", @prev_path, class: "macro-nav-arrow" %>
+    <%= link_to "›", @next_path, class: "macro-nav-arrow" %>
+  </div>
+</div>
+
+<div class="macro-period-title"><%= @year %></div>
+
+<div class="macro-chip-row">
+  <% (1..4).each do |q| %>
+    <%= link_to "Q#{q}", planner_quarter_on_path(year: @year, q: q), class: "macro-chip" %>
+  <% end %>
+</div>
+
+<div id="planner-categories">
+  <%= render partial: "planner_categories/category", collection: @categories, as: :category %>
+</div>
+
+<div class="macro-add-category-row">
+  <%= form_with model: PlannerCategory.new, url: planner_categories_path, class: "macro-add-category-form",
+      data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |f| %>
+    <%= f.hidden_field :period_type, value: "year" %>
+    <%= f.hidden_field :period_key, value: @period_key %>
+    <span class="macro-dashed-circle"></span>
+    <%= f.text_field :title, placeholder: "Category name…", class: "macro-add-input", autocomplete: "off", data: { reset_form_target: "input" } %>
+    <%= f.submit "Add category", class: "macro-add-btn" %>
+  <% end %>
+</div>
