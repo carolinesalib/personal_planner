@@ -47,8 +47,12 @@
         <% end %>
 
         <div class="planner-sidebar-section">Daily &amp; mobile</div>
-        <div class="planner-sidebar-item planner-sidebar-item--mobile"><span class="planner-sidebar-label">Shoulds</span><span class="planner-sidebar-badge">Mobile</span></div>
-        <div class="planner-sidebar-item planner-sidebar-item--mobile"><span class="planner-sidebar-label">Today</span><span class="planner-sidebar-badge">Mobile</span></div>
+        <%= link_to shoulds_path, class: "planner-sidebar-item planner-sidebar-item--mobile" do %>
+          <span class="planner-sidebar-label">Shoulds</span><span class="planner-sidebar-badge">Mobile</span>
+        <% end %>
+        <%= link_to root_path, class: "planner-sidebar-item planner-sidebar-item--mobile" do %>
+          <span class="planner-sidebar-label">Today</span><span class="planner-sidebar-badge">Mobile</span>
+        <% end %>
         <% if current_user.gratitude_enabled %>
           <div class="planner-sidebar-item planner-sidebar-item--mobile"><span class="planner-sidebar-label">Gratitude</span><span class="planner-sidebar-badge">Mobile</span></div>
         <% end %>

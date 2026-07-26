@@ -408,7 +408,12 @@
 
   .planner-sidebar-item--mobile {
     color: #6E6759;
-    cursor: default;
+    cursor: pointer;
+  }
+
+  .planner-sidebar-item--mobile:hover {
+    background: #3A352F;
+    color: var(--color-planner-card);
   }
 
   .planner-sidebar-dot {
