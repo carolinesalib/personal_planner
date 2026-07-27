@@ -56,6 +56,11 @@ If either fails, ask the user whether to proceed with the commit or fix first.
 
 ## Testing
 - RSpec + Factory Bot (no Minitest). Run everything with `bundle exec rspec`.
+- **Layer choice:** put logic in fast request specs (`spec/requests/`); reserve E2E
+  feature specs (`spec/features/`) for behavior that genuinely needs a real browser
+  (Stimulus/JS flows, multi-page navigation). E.g. onboarding's redirect rules and
+  gratitude-panel gating are request specs; the wizard's client-side step-through is
+  a feature spec.
 - E2E specs use Playwright (`playwright-ruby-client` + `capybara-playwright-driver`),
   driving a real Chromium browser against a real Puma server. Specs live in `spec/features/`.
   See the README for run commands (including `HEADFUL=1` to watch in a visible browser).

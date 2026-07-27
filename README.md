@@ -26,7 +26,10 @@ bundle exec rspec
 ### End-to-end (browser) tests
 
 E2E specs live in `spec/features/` and drive a **real Chromium browser** through
-Playwright against a real Puma server.
+Playwright against a real Puma server. They cover the flows that depend on real
+browser behavior — navigation across all nav links (`navigation_spec.rb`) and the
+onboarding wizard's client-side step-through (`onboarding_wizard_spec.rb`). Pure
+server-side logic is covered by faster request specs in `spec/requests/`.
 
 **One-time setup** (installs the Playwright CLI + browser; separate from the app's
 importmap JS):
