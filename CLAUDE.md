@@ -97,6 +97,8 @@ Longer-horizon planning, one level up from the daily "Today's Plan."
 - Week also has a "weekly challenge" mission field; Quarter/Year link down to
   their child periods (Quarter → its weeks, Year → its quarters)
 - Desktop: left sidebar under "Macro planning" (`app/views/layouts/planner_desktop.html.erb`)
+- Mobile: reached via Settings → "Planners" section (Week planner / Quarter planner /
+  Year planner rows); a back arrow on each page returns to Settings
 
 ## Notes & Ideas
 - Investigate Turbo Snapshots + Service Workers for offline support with Hotwire Native
