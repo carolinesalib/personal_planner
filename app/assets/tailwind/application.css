@@ -99,6 +99,11 @@
   border-bottom: 1px solid var(--color-planner-border);
 }
 
+/* Avoid a double line where the last item's border meets the "completed" divider. */
+#shoulds-list .should-item:last-child {
+  border-bottom: none;
+}
+
 .should-ring {
   flex: none;
   width: 28px;
