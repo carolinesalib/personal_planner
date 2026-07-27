@@ -86,6 +86,18 @@ Calendar view that lets you plan ahead or look back at previous days.
   - Half circle = partially complete
   - Full circle (or emoji) = all items completed
 
+### Page 4: Macro Planning (Week / Quarter / Year)
+Longer-horizon planning, one level up from the daily "Today's Plan."
+
+- Three periods — Week, Quarter, Year — each with prev/this/next navigation
+  (`/plan/week`, `/plan/quarter`, `/plan/year`; controllers: `PlannerWeeksController`,
+  `PlannerQuartersController`, `PlannerYearsController`)
+- Categories (e.g. "Personal", "Career goals") each hold a checklist of items,
+  same add/edit/remove/check pattern as the Should list
+- Week also has a "weekly challenge" mission field; Quarter/Year link down to
+  their child periods (Quarter → its weeks, Year → its quarters)
+- Desktop: left sidebar under "Macro planning" (`app/views/layouts/planner_desktop.html.erb`)
+
 ## Notes & Ideas
 - Investigate Turbo Snapshots + Service Workers for offline support with Hotwire Native
   (cache pages for offline viewing, queue actions to replay when back online)
@@ -95,7 +107,6 @@ Calendar view that lets you plan ahead or look back at previous days.
 - Sync with external calendar (Google Calendar, Apple Calendar, etc.)
 - LLM-powered auto-planning — suggest/generate next day's plan based on
   "should" list, past patterns, calendar events
-- Planning at multiple horizons: week, month/quarter, year
 - Gratitude panel — appears during day planning but NOT on the daily planner view.
   Entries surface later in a dedicated gratitude section and on the calendar view
 - i18n support — Portuguese and English
