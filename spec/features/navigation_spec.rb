@@ -73,11 +73,11 @@ RSpec.describe "Navigation", type: :feature do
     it "jumps to Shoulds and Today from the sidebar's mobile links" do
       visit planner_week_path
 
-      click_on "Shoulds"
+      within(".planner-sidebar") { click_on "Shoulds" }
       expect(page).to have_current_path(shoulds_path)
 
       visit planner_week_path
-      click_on "Today"
+      within(".planner-sidebar") { click_on "Today" }
       expect(page).to have_current_path(root_path)
     end
   end
