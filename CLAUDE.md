@@ -56,7 +56,17 @@ If either fails, ask the user whether to proceed with the commit or fix first.
 
 ## Testing
 - RSpec + Factory Bot (no Minitest)
-- TODO: Set up Playwright for Ruby (`playwright-ruby-client` + `capybara-playwright-driver`) for E2E tests
+- System/E2E specs use Playwright (`playwright-ruby-client` + `capybara-playwright-driver`),
+  driving a real Chromium browser against a real Puma server. Specs live in `spec/system/`.
+  - One-time setup: `npm install` (installs the pinned `playwright` npm package used only
+    as the browser-automation CLI, separate from the app's importmap-based JS) then
+    `./node_modules/.bin/playwright install chromium`.
+  - Login in system specs goes through the real `/login` page and OmniAuth's test-mode
+    mock (see `spec/support/system_auth_helper.rb#sign_in_via_browser`) — the request-spec
+    `AuthHelper#sign_in` (which stubs `current_user`) does not work here since Playwright
+    drives a separate browser process with a real session, not a stubbed controller.
+  - Mobile-only UI (bottom nav overlay, back arrows) is exercised by tagging specs `:mobile`,
+    which resizes the Playwright window to a phone viewport before the example runs.
 
 ## Design — Pages
 

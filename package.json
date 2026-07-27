@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "description": "Playwright CLI, used only to drive system/E2E specs via capybara-playwright-driver. Not part of the app's asset pipeline (importmap-rails).",
+  "devDependencies": {
+    "playwright": "1.61.1"
+  }
+}

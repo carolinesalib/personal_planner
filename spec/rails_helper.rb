@@ -40,6 +40,7 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   config.include FactoryBot::Syntax::Methods
   config.include AuthHelper, type: :request
+  config.include SystemAuthHelper, type: :system
 
   config.before(:suite) do
     OmniAuth.config.test_mode = true

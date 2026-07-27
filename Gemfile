@@ -58,6 +58,11 @@ group :development, :test do
 
   gem "rspec-rails"
   gem "factory_bot_rails"
+
+  # E2E/system tests
+  gem "capybara"
+  gem "playwright-ruby-client", require: false
+  gem "capybara-playwright-driver"
 end
 
 group :development do
