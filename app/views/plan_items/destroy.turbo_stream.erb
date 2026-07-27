@@ -14,7 +14,16 @@
          end
 %>
 
-<%= turbo_stream.remove @plan_item %>
+<% if @kind == "priority" %>
+  <%# Re-render the whole list so the circled position numbers renumber after removal. %>
+  <%= turbo_stream.update "priorities-list" do %>
+    <%= render partial: "plan_items/plan_item", collection: @priorities, as: :plan_item %>
+  <% end %>
+  <%# Keep the dashed "add" circle showing the number the next priority will get. %>
+  <%= turbo_stream.update "next-priority-num" do %><%= next_priority_number(p_count) %><% end %>
+<% else %>
+  <%= turbo_stream.remove @plan_item %>
+<% end %>
 
 <%= turbo_stream.update "plan-header" do %>
   <div style="flex:none; width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:<%= ring_bg %>;">
