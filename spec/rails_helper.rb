@@ -40,9 +40,22 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   config.include FactoryBot::Syntax::Methods
   config.include AuthHelper, type: :request
-  config.include SystemAuthHelper, type: :system
+  config.include SystemAuthHelper, type: :feature
 
   config.before(:suite) do
     OmniAuth.config.test_mode = true
+  end
+
+  # Feature specs drive a real browser against a real Puma server running in a
+  # separate thread with its own DB connection, so it can't see data created
+  # inside an uncommitted test transaction. Turn off transactional fixtures for
+  # just these groups (set before the transaction opens) and clean up by
+  # truncation instead. Request/model specs keep transactional rollback.
+  config.prepend_before(:each, type: :feature) do
+    self.class.use_transactional_tests = false
+  end
+
+  config.append_after(:each, type: :feature) do
+    [ PlannerItem, PlannerCategory, PlannerPeriod, PlanItem, Should, LoginToken, User ].each(&:delete_all)
   end
 end

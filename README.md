@@ -1,24 +1,64 @@
-# README
+# Shoulds — Personal Planner
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A personal planner/organizer app. Web + iOS (via Hotwire Native).
 
-Things you may want to cover:
+Ruby 3.4.4 / Rails 8.0.2, PostgreSQL, Hotwire (Turbo + Stimulus), Tailwind, Importmap.
+See [CLAUDE.md](CLAUDE.md) for architecture, auth setup, and deployment details.
 
-* Ruby version
+## Running locally
 
-* System dependencies
+Set the Google OAuth env vars, then start the dev server:
 
-* Configuration
+```
+export GOOGLE_CLIENT_ID=your-client-id
+export GOOGLE_CLIENT_SECRET=your-client-secret
+bin/dev
+```
 
-* Database creation
+## Tests
 
-* Database initialization
+Unit, model, and request specs (RSpec + Factory Bot):
 
-* How to run the test suite
+```
+bundle exec rspec
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+### End-to-end (browser) tests
 
-* Deployment instructions
+E2E specs live in `spec/features/` and drive a **real Chromium browser** through
+Playwright against a real Puma server.
 
-* ...
+**One-time setup** (installs the Playwright CLI + browser; separate from the app's
+importmap JS):
+
+```
+npm install
+npx playwright install chromium
+```
+
+**Run them** (headless, like CI):
+
+```
+bundle exec rspec spec/features
+```
+
+**Watch them run in a visible browser.** Set `HEADFUL=1` to launch a real Chromium
+window, and optionally `SLOWMO=<ms>` to pause between each action so you can follow
+along:
+
+```
+HEADFUL=1 SLOWMO=400 bundle exec rspec spec/features
+```
+
+Run a single example by name:
+
+```
+HEADFUL=1 SLOWMO=400 bundle exec rspec spec/features/navigation_spec.rb -e "reaches Week planner and returns"
+```
+
+> These specs are `type: :feature`, **not** `type: :system`, on purpose — Rails'
+> system-test machinery hijacks the browser lifecycle and suppresses the visible
+> window even in headed mode. `:feature` uses the Capybara Playwright driver
+> directly, so `HEADFUL=1` actually shows a window. See `spec/support/capybara.rb`.
+
+On failure, a screenshot is saved to `tmp/capybara/` regardless of headed/headless mode.

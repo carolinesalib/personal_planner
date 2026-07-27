@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Navigation", type: :system do
+RSpec.describe "Navigation", type: :feature do
   before do
     sign_in_via_browser(create(:user))
   end
