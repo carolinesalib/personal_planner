@@ -55,8 +55,33 @@ If either fails, ask the user whether to proceed with the commit or fix first.
 - `bin/brakeman` — security scan
 
 ## Testing
-- RSpec + Factory Bot (no Minitest)
-- TODO: Set up Playwright for Ruby (`playwright-ruby-client` + `capybara-playwright-driver`) for E2E tests
+- RSpec + Factory Bot (no Minitest). Run everything with `bundle exec rspec`.
+- **Layer choice:** put logic in fast request specs (`spec/requests/`); reserve E2E
+  feature specs (`spec/features/`) for behavior that genuinely needs a real browser
+  (Stimulus/JS flows, multi-page navigation). E.g. onboarding's redirect rules and
+  gratitude-panel gating are request specs; the wizard's client-side step-through is
+  a feature spec.
+- E2E specs use Playwright (`playwright-ruby-client` + `capybara-playwright-driver`),
+  driving a real Chromium browser against a real Puma server. Specs live in `spec/features/`.
+  See the README for run commands (including `HEADFUL=1` to watch in a visible browser).
+  - One-time setup: `npm install` (installs the pinned `playwright` npm package used only
+    as the browser-automation CLI, separate from the app's importmap-based JS) then
+    `npx playwright install chromium`.
+  - **`type: :feature`, not `:system`, on purpose.** rspec-rails's `type: :system` routes
+    through Rails' `ActionDispatch::SystemTesting`, which takes over the browser lifecycle
+    and suppresses the visible window even with `headless: false`. `:feature` uses
+    `Capybara.default_driver` directly, so `HEADFUL=1` actually shows a window. This means
+    feature specs also don't get transactional rollback for free — `spec/rails_helper.rb`
+    turns off transactional tests for `type: :feature` and cleans up by truncation instead
+    (request/model specs keep transactional rollback).
+  - Login goes through the real `/login` page and OmniAuth's test-mode mock
+    (see `spec/support/system_auth_helper.rb#sign_in_via_browser`) — the request-spec
+    `AuthHelper#sign_in` (which stubs `current_user`) does not work here since Playwright
+    drives a separate browser process with a real session, not a stubbed controller.
+  - Mobile-only UI (bottom nav overlay, back arrows) is exercised by tagging specs `:mobile`,
+    which resizes the Playwright window to a phone viewport before the example runs.
+  - CI runs feature specs in a dedicated `e2e` job (installs Playwright + Chromium); the
+    regular `test` job excludes `spec/features`.
 
 ## Design — Pages
 
