@@ -15,7 +15,7 @@
          when 5 then "Five. A focused day."
          else "Over five. Trim if you can."
          end
-  next_num = p_count >= 9 ? "+" : (p_count + 1).to_s
+  next_num = next_priority_number(p_count)
   placeholder = p_count >= 5 ? "Add another priority…" : "Priority #{p_count + 1}…"
 %>
 
@@ -51,7 +51,7 @@
 
 <%= form_with model: PlanItem.new, url: plan_items_path, class: "plan-add-row",
     data: { controller: "reset-form", action: "turbo:submit-end->reset-form#reset" } do |f| %>
-  <span style="flex:none; width:28px; height:28px; border-radius:50%; border:2px dashed #C7BEB1; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:#C7BEB1;"><%= next_num %></span>
+  <span id="next-priority-num" style="flex:none; width:28px; height:28px; border-radius:50%; border:2px dashed #C7BEB1; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:#C7BEB1;"><%= next_num %></span>
   <%= f.hidden_field :date, value: @date %>
   <%= f.hidden_field :kind, value: "priority" %>
   <%= f.text_field :title, placeholder: placeholder, class: "should-add-input", style: "font-size:16px; font-weight:600;", autocomplete: "off", data: { reset_form_target: "input" } %>
