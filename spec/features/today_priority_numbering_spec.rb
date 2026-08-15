@@ -11,11 +11,22 @@ RSpec.describe "Today priority numbering", type: :feature do
 
   # The circled number is the text of the toggle button at the start of each
   # priority row. Returns the numbers as shown, top to bottom.
+  # Collecting the rows and then reading each row's button in a separate step
+  # leaves a window where a turbo-stream replace detaches a row mid-read
+  # (StaleReferenceError), which the edit specs below hit. Retry the whole read
+  # when that happens rather than asserting on a half-swapped list.
   def visible_priority_numbers
-    within("#priorities-list") do
-      all(".should-item").map do |row|
-        row.first("button", minimum: 1).text.strip
+    attempts = 0
+    begin
+      within("#priorities-list") do
+        all(".should-item").map do |row|
+          row.first("button", minimum: 1).text.strip
+        end
       end
+    rescue Capybara::Playwright::Node::StaleReferenceError
+      attempts += 1
+      raise if attempts > 3
+      retry
     end
   end
 
@@ -63,6 +74,46 @@ RSpec.describe "Today priority numbering", type: :feature do
 
     expect(page).to have_no_css("#priorities-list .should-item", text: "First thing")
     expect(next_priority_placeholder).to eq("2")
+  end
+
+  # Inline edit: click the title text, type the new title, press Enter.
+  #
+  # The turbo-stream replace detaches the edited row and inserts a new one, so the
+  # list briefly holds fewer rows than it should. Waiting only on the new title or
+  # the row count can be satisfied by the pre-swap DOM and lets the caller read
+  # numbers mid-swap. `expected_count` rows each carrying a non-empty number button
+  # only holds once the replacement has actually landed.
+  def rename_priority(from:, to:, expected_count:)
+    within("#priorities-list .should-item", text: from) do
+      find(".should-text").click
+      # The input opens pre-selected, so typing replaces the old title.
+      find("input.should-input").send_keys(to, :enter)
+    end
+    expect(page).to have_css("#priorities-list .should-item", text: to)
+    expect(page).to have_no_css("#priorities-list input.should-input")
+    expect(page).to have_css("#priorities-list .should-item", count: expected_count)
+    expect(page).to have_css("#priorities-list .should-item form button:not(:empty)", count: expected_count)
+  end
+
+  it "keeps the circled number after editing a priority's title" do
+    add_priority("First thing")
+    add_priority("Second thing")
+    add_priority("Third thing")
+
+    rename_priority(from: "Second thing", to: "Second thing, renamed", expected_count: 3)
+
+    expect(visible_priority_numbers).to eq(%w[1 2 3])
+  end
+
+  # The first priority's counter is 0, the one value most likely to be dropped by
+  # a truthiness check on the counter local.
+  it "keeps the circled number after editing the first priority" do
+    add_priority("First thing")
+    add_priority("Second thing")
+
+    rename_priority(from: "First thing", to: "First thing, renamed", expected_count: 2)
+
+    expect(visible_priority_numbers).to eq(%w[1 2])
   end
 
   it "renumbers after deleting a middle priority" do

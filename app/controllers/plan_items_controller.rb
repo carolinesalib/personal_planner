@@ -18,6 +18,7 @@ class PlanItemsController < ApplicationController
   def update
     @date = @plan_item.date
     if @plan_item.update(plan_item_params.slice(:title))
+      load_plan_data
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_back fallback_location: today_path }

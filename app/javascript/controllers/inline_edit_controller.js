@@ -36,12 +36,14 @@ export default class extends Controller {
       return
     }
 
-    const token = document.querySelector('meta[name="csrf-token"]').content
+    // The meta tag is absent when forgery protection is off (e.g. the test
+    // environment), so read it defensively and omit the header when missing.
+    const token = document.querySelector('meta[name="csrf-token"]')?.content
     fetch(this.urlValue, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRF-Token": token,
+        ...(token ? { "X-CSRF-Token": token } : {}),
         "Accept": "text/vnd.turbo-stream.html"
       },
       body: JSON.stringify({ [this.modelValue]: { title: newText } })
