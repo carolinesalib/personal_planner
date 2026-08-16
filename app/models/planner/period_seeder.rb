@@ -31,6 +31,22 @@ module Planner
       end
     end
 
+    # Copy the most recent prior period's categories and open items into this
+    # period. Unlike #call this assumes the period has already been cleared, so
+    # it neither bails on existing data nor falls back to the defaults.
+    def copy_from_previous
+      seed_from(previous_period_categories)
+    end
+
+    # Lay down the default categories with empty checklists.
+    def seed_default_categories
+      seed_defaults
+    end
+
+    def previous_period_categories?
+      previous_period_categories.any?
+    end
+
     private
 
     def previous_period_categories
