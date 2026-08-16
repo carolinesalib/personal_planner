@@ -1,12 +1,20 @@
 <% content_for :title, "Week #{@monday.cweek} · Shoulds" %>
 
-<div class="macro-period-nav">
-  <%= link_to "#{@monday.year} Quarter #{Planner::PeriodKey.quarter_of(@monday)}", planner_quarter_path, class: "macro-period-kicker" %>
-  <div class="macro-period-nav-actions">
-    <%= link_to "This week", @this_path, class: "macro-nav-btn" %>
-    <%= link_to "‹", @prev_path, class: "macro-nav-arrow" %>
-    <%= link_to "›", @next_path, class: "macro-nav-arrow" %>
+<div data-controller="week-reset">
+  <div class="macro-period-nav">
+    <%= link_to "#{@monday.year} Quarter #{Planner::PeriodKey.quarter_of(@monday)}", planner_quarter_path, class: "macro-period-kicker" %>
+    <div class="macro-period-nav-actions">
+      <% if @can_reset %>
+        <%# This week and later only. Past weeks stay as the record of what happened. %>
+        <button type="button" class="macro-nav-btn" data-action="click->week-reset#show">Clear week</button>
+      <% end %>
+      <%= link_to "This week", @this_path, class: "macro-nav-btn" %>
+      <%= link_to "‹", @prev_path, class: "macro-nav-arrow" %>
+      <%= link_to "›", @next_path, class: "macro-nav-arrow" %>
+    </div>
   </div>
+
+  <%= render "planner_weeks/reset_confirm" %>
 </div>
 
 <div class="macro-period-title"><%= @monday.year %> Week <%= @monday.cweek %></div>
