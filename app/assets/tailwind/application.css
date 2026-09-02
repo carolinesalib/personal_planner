@@ -40,6 +40,8 @@
   .planner-shell {
     min-height: auto;
     height: 838px;
+    max-height: calc(100vh - 88px);
+    max-height: calc(100dvh - 88px);
     border-radius: 48px;
     border: 1px solid #D7D0C5;
     box-shadow: 0 30px 70px rgba(45, 41, 37, 0.20);

@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
   get "plan/week", to: "planner_weeks#show", as: :planner_week
   get "plan/week/:date", to: "planner_weeks#show", as: :planner_week_on, constraints: { date: /\d{4}-\d{2}-\d{2}/ }
+  delete "plan/week/:date/reset", to: "planner_weeks#reset", as: :planner_week_reset, constraints: { date: /\d{4}-\d{2}-\d{2}/ }
   get "plan/quarter", to: "planner_quarters#show", as: :planner_quarter
   get "plan/quarter/:year/:q", to: "planner_quarters#show", as: :planner_quarter_on, constraints: { year: /\d{4}/, q: /[1-4]/ }
   get "plan/year", to: "planner_years#show", as: :planner_year
